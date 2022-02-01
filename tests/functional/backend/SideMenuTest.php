@@ -37,4 +37,35 @@ class SideMenuTest extends TestBaseClassWeb
         // Browser login.
         self::adminLogin($username, $password);
     }
+
+    public static function tearDownAfterClass(): void
+    {
+        parent::tearDownAfterClass();
+        
+        // Delete survey.
+        if (self::$testSurvey) {
+            self::$testSurvey->delete();
+            self::$testSurvey = null;
+        }
+    }
+
+    /**
+     * @test
+     */
+    public function checkSideMenuAreTheSame(): void
+    {
+        $expected = [];
+        $actual = [''];
+        $this->assertEqual($expected, $actual);
+    }
+
+    public function checkNewQuestionIsVisibleOnTheSideMenu(): void
+    {
+
+    }
+
+    public function checkChangedQuestionWillBeUpdatedInTheSideMenu(): void
+    {
+
+    }
 }
