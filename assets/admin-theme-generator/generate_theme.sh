@@ -53,9 +53,9 @@ rm -rf ~/.yarn
 curl --silent https://yarnpkg.com/install.sh | bash -s -- --version $INSTALL_YARN_VERSION
 echo -e "$COLOR_BLUE Package $COLOR_YELLOW yarn $COLOR_BLUE was successfully installed.";
 
-# Install node-sass
+# Install sass
 echo -e "$COLOR_BLUE Install $COLOR_YELLOW node-sass $COLOR_BLUE package.";
-yarn add node-sass
+yarn add sass
 echo -e "$COLOR_BLUE Package $COLOR_YELLOW node-sass $COLOR_BLUE was successfully installed.";
 
 # Install r2
