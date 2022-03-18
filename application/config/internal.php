@@ -49,7 +49,7 @@ $internalConfig = array(
         // bootstrap 5 configuration
         'bootstrap' => realpath(__DIR__.'/../assets/bootstrap_5'),
         // yiistrap configuration
-        // TODO:
+        // TODO: remove yiistrap/yiiwheels
         'yiistrap' => realpath(__DIR__.'/../extensions/bootstrap'),
         'vendor.twbs.bootstrap.dist' => realpath(__DIR__.'/../extensions/bootstrap'),
         // yiiwheels configuration
