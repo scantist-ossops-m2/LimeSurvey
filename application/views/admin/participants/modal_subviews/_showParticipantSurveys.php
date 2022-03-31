@@ -17,7 +17,7 @@
     <input type="hidden" name="Participant[participant_id]" value="<?php echo $model->participant_id; ?>" />
     <div class="container-fluid">
     <?php
-        $this->widget('bootstrap.widgets.TbGridView', array(
+        $this->widget('yiistrap.widgets.TbGridView', array(
             'id' => 'list_participant_surveys',
             'dataProvider' => $surveymodel->search(),
             'columns' => $surveymodel->columns,
