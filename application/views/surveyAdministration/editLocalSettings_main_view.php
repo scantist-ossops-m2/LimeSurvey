@@ -58,7 +58,7 @@ if (isset($scripts)) {
             <input type="hidden" name="sid" value="<?php echo $surveyid; ?>"/>
             <input type="hidden" name="surveyid" value="<?php echo $surveyid; ?>"/>
             <input type="hidden" name="responsejson" value="1"/>
-            <input type='submit' class="hide" id="globalsetting_submit"/>
+            <input type='submit' class="d-none" id="globalsetting_submit"/>
             <?php echo CHtml::endForm() ?>
         <?php } ?>
     </div>
