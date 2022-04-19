@@ -126,8 +126,8 @@ Yii::app()->getClientScript()->registerScript(
             $(this).tab('show');       
         });
     
-        $('.text-option-inherit').on('change', function(e){
-            var newValue = $(this).find('.btn.active input').val();
+        $('.text-option-inherit input').on('change', function(e){
+            var newValue = $(this).find('.btn-check:checked').val();
             var parent = $(this).parent().parent();
             var inheritValue = parent.find('.inherit-edit').data('inherit-value');
             var savedValue = parent.find('.inherit-edit').data('saved-value');

@@ -97,18 +97,18 @@ $('#" . $entryData['name'] . "').on('submit.editLocalsettings', function(e){
 });
 
 $('.text-option-inherit').on('change', function(e){
-    var newValue = $(this).find('.btn.active input').val();
+    var newValue = $(this).find('.btn-check:checked').val();
     var parent = $(this).parent().parent();
     var inheritValue = parent.find('.inherit-edit').data('inherit-value');
     var savedValue = parent.find('.inherit-edit').data('saved-value');
 
     if (newValue == 'Y'){
-        parent.find('.inherit-edit').addClass('hide').removeClass('show').val(inheritValue);
-        parent.find('.inherit-readonly').addClass('show').removeClass('hide');
+        parent.find('.inherit-edit').addClass('d-none').removeClass('show').val(inheritValue);
+        parent.find('.inherit-readonly').addClass('show').removeClass('d-none');
     } else {
         var inputValue = (savedValue === inheritValue) ? \"\" : savedValue;
-        parent.find('.inherit-edit').addClass('show').removeClass('hide').val(inputValue);
-        parent.find('.inherit-readonly').addClass('hide').removeClass('show');
+        parent.find('.inherit-edit').addClass('show').removeClass('d-none').val(inputValue);
+        parent.find('.inherit-readonly').addClass('d-none').removeClass('show');
     }
 });
 ",
