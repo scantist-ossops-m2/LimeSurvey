@@ -15,10 +15,10 @@ echo viewHelper::getViewTestTag('statisticsIndex');
 <?php echo CHtml::form(array("admin/statistics/sa/index/surveyid/{$surveyid}/"), 'post', array('name' => 'generate-statistics', 'class' => '', 'id' => 'generate-statistics')); ?>
 <div id='statisticsview' class='side-body <?php echo getSideBodyClass(false); ?>'>
     <div class="h1 visible-print-block text-center"><?php echo flattenText($oSurvey->defaultlanguage->surveyls_title,1); ?></div>
-    <div class="row hidden-print">
+    <div class="row d-print-none">
         <div class="col-md-12">
             <div class="col-md-3 text-start">
-                <h4 class="hidden-print">
+                <h4 class="d-print-none">
                     <span class="fa fa-bar-chart"></span> &nbsp;&nbsp;&nbsp;
                     <?php eT("Statistics"); ?>
                 </h4>
@@ -28,7 +28,7 @@ echo viewHelper::getViewTestTag('statisticsIndex');
 
 
     <!-- General filters -->
-    <div class="row hidden-print">
+    <div class="row d-print-none">
         <div class="col-sm-12 content-right">
 
             <!-- Header -->
@@ -61,7 +61,7 @@ echo viewHelper::getViewTestTag('statisticsIndex');
     </div>
 
     <!-- Response filter -->
-    <div class="row hidden-print">
+    <div class="row d-print-none">
         <div class="col-lg-12 content-right">
             <div style='clear: both'></div>
 
@@ -136,7 +136,7 @@ echo viewHelper::getViewTestTag('statisticsIndex');
             </div>
         </div>
     </div>
-    <div class="row hidden-print">
+    <div class="row d-print-none">
         <div class="col-lg-12 content-left">
             <button id="statisticsExportImages" class="btn btn-info" style="margin: auto;"><?= gT('Export images') ?></button>
             <p><?php eT('Make sure all images on this screen are loaded before clicking on the button.'); ?></p>
