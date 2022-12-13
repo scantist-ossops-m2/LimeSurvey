@@ -193,6 +193,8 @@ Yii::$enableIncludePath = false;
 Yii::createApplication('LSYii_Application', $config)->run();
 } catch (Throwable $ex) {
     var_dump($ex->getMessage());
+    fwrite(STDERR, $ex->getMessage());
+    fwrite(STDOUT, $ex->getMessage());
 }
 
 /* End of file index.php */
