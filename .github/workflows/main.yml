@@ -114,6 +114,8 @@ jobs:
           sudo tail -n 500 /var/log/php7.4-fpm.log || true
           sudo tail -n 500 /var/log/php7.2-fpm.log || true
           sudo tail -n 500 /var/log/php8.0-fpm.log || true
+          sudo tail -n 500 /var/log/mysql/error.log || true
+          sudo cat /etc/php/7.4/fpm/php.ini || true
           which php
           php --version
           php -r 'phpinfo();' | grep log
