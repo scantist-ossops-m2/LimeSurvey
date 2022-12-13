@@ -116,7 +116,7 @@ jobs:
           sudo tail -n 500 /var/log/php8.0-fpm.log || true
           sudo tail -n 500 /var/log/mysql/error.log || true
           #sudo cat /etc/php/7.4/fpm/php.ini || true
-          #sudo cat /etc/php/8.0/fpm/php.ini || true
+          sudo cat /etc/php/8.0/fpm/php.ini || true
           #sudo find /etc/php || true
           which php
           php --version
