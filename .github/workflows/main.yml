@@ -17,7 +17,7 @@ jobs:
     strategy:
       matrix:
         # Specify what versions of php you want to test
-        php-versions: ['7.2', '8.0']
+        php-versions: ['8.0']
     # Env vars for this job
     env:
       DBENGINE: INNODB
@@ -93,8 +93,8 @@ jobs:
 
       - name: Load custom console and start the Application
         run: |
-          php application/commands/console.php install admin password TravisLS no@email.com verbose
           cp application/config/config-sample-mysql.php application/config/config.php
+          php application/commands/console.php install admin password TravisLS no@email.com verbose
 
           # Enable debug=2 in config file. OBS: This assumes debug is on line 61.
           # TODO: Disable, a lines was added to config file and some tests started to fail.
@@ -102,9 +102,6 @@ jobs:
           # NB: There can be a difference in assets used when debug = 0 or 2 (minified version or not)
           # sed -i '60s/.*/        "debug"=>2,/' application/config/config.php
           # cat application/config/config.php
-
-      - name: Run syntax check, CodeSniffer, MessDetector, ...
-        run: composer test
 
       - name: Test the server
         run: |
@@ -120,34 +117,3 @@ jobs:
           php -r 'phpinfo();' | grep log
           php --info | grep log
           find /var/log
-
-        # Chromedriver setup.
-        # Note: Keep getting timeout problems on Travis with chromedriver.
-        # wget https://chromedriver.storage.googleapis.com/2.33/chromedriver_linux64.zip
-        # unzip chromedriver_linux64.zip
-
-      - name: Run unit tests
-        env:
-            XDEBUG_MODE: coverage
-        run: php third_party/bin/phpunit --testdox --stop-on-failure tests/unit
-
-      - name: Check test coverage if cov.xml exists (won't work on PHP 8 with current phpunit version)
-        run: php tests/bin/check_coverage.php cov.xml 37
-
-      - name: Set up Selenium with firefox (needed for integrity tests)
-        run: |
-          echo `which firefox`
-          echo `firefox -v`
-          echo `geckodriver --version`
-
-          # Setup Selenium with Firefox headless mode, Gecko driver already installed
-          wget "https://selenium-release.storage.googleapis.com/3.7/selenium-server-standalone-3.7.1.jar"
-          export MOZ_HEADLESS=1
-          export MOZ_HEADLESS_WIDTH=1280
-          export MOZ_HEADLESS_HEIGHT=1024
-          java -jar selenium-server-standalone-3.7.1.jar -enablePassThrough false > /dev/null 2> /dev/null &
-
-      - name: Run functional tests
-        env:
-            DOMAIN: localhost
-        run: php third_party/bin/phpunit --testdox --stop-on-failure tests/functional
