@@ -1,4 +1,5 @@
 <?php
+try{
 /*
  *---------------------------------------------------------------
  * SYSTEM FOLDER NAME
@@ -190,6 +191,9 @@ $config = require_once(APPPATH . 'config/internal' . EXT);
 
 Yii::$enableIncludePath = false;
 Yii::createApplication('LSYii_Application', $config)->run();
+} catch (Throwable $ex) {
+    var_dump($ex->getMessage());
+}
 
 /* End of file index.php */
 /* Location: ./index.php */
