@@ -195,6 +195,7 @@ Yii::createApplication('LSYii_Application', $config)->run();
     var_dump($ex->getMessage());
     fwrite(STDERR, $ex->getMessage());
     fwrite(STDOUT, $ex->getMessage());
+    fwrite(STDOUT, 'phpversion:' . phpversion());
 }
 
 /* End of file index.php */
