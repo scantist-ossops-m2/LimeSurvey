@@ -9,5 +9,7 @@
     Require all granted
   </Directory>
 
+  ErrorLog "/var/log/httpd/error_log"
+
   # [...]
 </VirtualHost> 
