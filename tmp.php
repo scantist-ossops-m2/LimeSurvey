@@ -10,6 +10,7 @@ try {
     $user = "root";
     $password = "root";
     $db = new PDO($dsn, $user, $password);
+    echo "fine\n";
 } catch (Throwable $ex) {
     fwrite(STDERR, '1 ' . $ex->getMessage());
 }
@@ -19,6 +20,7 @@ try {
     $user = "root";
     $password = "root";
     $db = new PDO($dsn, $user, $password);
+    echo "fine\n";
 } catch (Throwable $ex) {
     fwrite(STDERR, '2 ' . $ex->getMessage());
 }
@@ -28,6 +30,7 @@ try {
     $user = "root";
     $password = "root";
     $db = new PDO($dsn, $user, $password);
+    echo "fine\n";
 } catch (Throwable $ex) {
     fwrite(STDERR, '3 ' . $ex->getMessage());
 }
