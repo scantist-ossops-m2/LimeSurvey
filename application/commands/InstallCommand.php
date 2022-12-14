@@ -107,7 +107,7 @@ class InstallCommand extends CConsoleCommand
         App()->configure(array('components' => array('db' => array('autoConnect' => true))));
         $connectionString = $this->connection->connectionString;
         $this->output($connectionString);
-        $this->connection->connectionString = preg_replace('/dbname=([^;]*)/', '', $connectionString);
+        //$this->connection->connectionString = preg_replace('/dbname=([^;]*)/', '', $connectionString);
         var_dump($this->connection->connectionString);
         try {
             $this->output('Opening connection...');
