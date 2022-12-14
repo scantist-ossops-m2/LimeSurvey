@@ -93,6 +93,8 @@ jobs:
 
       - name: Load custom console and start the Application
         run: |
+          php -v
+          php tmp.php
           cp application/config/config-sample-mysql.php application/config/config.php
           php application/commands/console.php install admin password TravisLS no@email.com verbose
 
