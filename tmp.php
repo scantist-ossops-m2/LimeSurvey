@@ -10,9 +10,9 @@ try {
     $user = "root";
     $password = "root";
     $db = new PDO($dsn, $user, $password);
-    echo "fine\n";
+    echo "fine 1\n";
 } catch (Throwable $ex) {
-    fwrite(STDERR, '1 ' . $ex->getMessage());
+    var_dump($ex->getMessage());
 }
 
 try {
@@ -20,17 +20,18 @@ try {
     $user = "root";
     $password = "root";
     $db = new PDO($dsn, $user, $password);
-    echo "fine\n";
+    echo "fine 2\n";
 } catch (Throwable $ex) {
-    fwrite(STDERR, '2 ' . $ex->getMessage());
+    var_dump($ex->getMessage());
 }
+
 try {
 
-    $dsn = "mysqli:host=localhost;port=3306;foo;";
+    $dsn = "mysql:host=localhost;port=3306;foo;";
     $user = "root";
     $password = "root";
     $db = new PDO($dsn, $user, $password);
-    echo "fine\n";
+    echo "fine 3\n";
 } catch (Throwable $ex) {
-    fwrite(STDERR, '3 ' . $ex->getMessage());
+    var_dump($ex->getMessage());
 }
