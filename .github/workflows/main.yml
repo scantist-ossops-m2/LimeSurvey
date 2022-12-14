@@ -17,7 +17,7 @@ jobs:
     strategy:
       matrix:
         # Specify what versions of php you want to test
-        php-versions: ['7.4']
+        php-versions: ['7.2']
     # Env vars for this job
     env:
       DBENGINE: INNODB
@@ -90,7 +90,6 @@ jobs:
           mysql -uroot -proot -e "Show  variables like '%large%';"
           mysql -uroot -proot -e "Show  variables like '%innodb_file%';"
           mysql -uroot -proot -e "Show  variables like '%innodb_default%';"
-          mysql -uroot -proot -e "CREATE DATABASE foo;"
           mysql -uroot -proot -e "CREATE DATABASE limesurvey;"
 
       - name: Load custom console and start the Application
@@ -104,7 +103,7 @@ jobs:
           # TODO: Disable, a lines was added to config file and some tests started to fail.
           # NB: EmCache is always disabled when debug => 2
           # NB: There can be a difference in assets used when debug = 0 or 2 (minified version or not)
-          sed -i '60s/.*/        "debug"=>2,/' application/config/config.php
+          # sed -i '60s/.*/        "debug"=>2,/' application/config/config.php
           # cat application/config/config.php
 
       - name: Test the server
