@@ -149,4 +149,3 @@ jobs:
         env:
             DOMAIN: localhost
         run: php third_party/bin/phpunit --testdox --stop-on-failure tests/functional
->>>>>>> master
