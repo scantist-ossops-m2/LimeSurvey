@@ -32,7 +32,10 @@ jobs:
       # Start the MySQL service - https://github.com/actions/virtual-environments/blob/main/images/linux/Ubuntu1804-README.md#mysql
       - name: Start the MySQL service
         run: |
-          sudo systemctl start mysql.service
+          sudo service mysql start
+          echo -e '[mysql]\nuser="root"\npassword="root"\nhost="localhost"\ndefault-character-set="utf8"\n[client]\ndefault-character-set="utf8"\n[mysqld]\ncollation-server="utf8_unicode_ci"\ncharacter-set-server="utf8"\ndefault-authentication-plugin="mysql_native_password"' > "$HOME/.my.cnf"
+          mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'root';" || true
+          sudo service mysql restart
       - name: Initilize and check all dependencies
         run: |
           mysql --version
@@ -77,11 +80,10 @@ jobs:
           # https://discuss.gogs.io/t/solved-mysql-error-1064-while-running-first-install/1604
           # InnoDB variables ARE already set to desired values in Github runner (ubuntu-18.04)
           sudo service mysql status
-          mysql -uroot -proot -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'root';" || true
-          mysql -uroot -proot -b limesurvey -e "INSERT INTO lime_plugins VALUES (NULL, 'Authdb', 1, NULL);" || true
-          mysql -uroot -proot -e "Show  variables like '%large%';"
-          mysql -uroot -proot -e "Show  variables like '%innodb_file%';"
-          mysql -uroot -proot -e "Show  variables like '%innodb_default%';"
+          mysql -b limesurvey -e "INSERT INTO lime_plugins VALUES (NULL, 'Authdb', 1, NULL);" || true
+          mysql -e "Show  variables like '%large%';"
+          mysql -e "Show  variables like '%innodb_file%';"
+          mysql -e "Show  variables like '%innodb_default%';"
         # Enable debug=2 in config file. OBS: This assumes debug is on line 61.
         # TODO: Disable, a lines was added to config file and some tests started to fail.
         # NB: EmCache is always disabled when debug => 2
