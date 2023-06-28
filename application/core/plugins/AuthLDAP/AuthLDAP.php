@@ -318,6 +318,7 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
      */
     private function createConnection()
     {
+        error_log('createConnection');
         // Get configuration settings:
         $ldapserver     = $this->get('server');
         $ldapport       = $this->get('ldapport');
@@ -358,7 +359,9 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
             // starting TLS secure layer
             if (!ldap_start_tls($ldapconn)) {
                 ldap_unbind($ldapconn); // Could not properly connect, unbind everything.
-                return array("errorCode" => 100, 'errorMessage' => ldap_error($ldapconn));
+                $error = ldap_error($ldapconn);
+                error_log('ldap_error 0 = ' . $error);
+                return array("errorCode" => 100, 'errorMessage' => $error);
             }
         }
         return $ldapconn;
@@ -486,20 +489,24 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
 
         if (empty($ldapmode) || $ldapmode == 'simplebind') {
             // in simple bind mode we know how to construct the userDN from the username
-            $ldapbind = @ldap_bind($ldapconn, $prefix . $username . $suffix, $password);
+            $dn = $prefix . $username . $suffix;
+            error_log('$dn = ' . $dn);
+            $ldapbind = ldap_bind($ldapconn, $dn, $password);
         } else {
             // in search and bind mode we first do a LDAP search from the username given
             // to foind the userDN and then we procced to the bind operation
             if (empty($binddn)) {
                 // There is no account defined to do the LDAP search,
                 // let's use anonymous bind instead
-                $ldapbindsearch = @ldap_bind($ldapconn);
+                $ldapbindsearch = ldap_bind($ldapconn);
             } else {
                 // An account is defined to do the LDAP search, let's use it
-                $ldapbindsearch = @ldap_bind($ldapconn, $binddn, $bindpwd);
+                $ldapbindsearch = ldap_bind($ldapconn, $binddn, $bindpwd);
             }
             if (!$ldapbindsearch) {
-                $this->setAuthFailure(100, ldap_error($ldapconn));
+                $error = ldap_error($ldapconn);
+                error_log('ldap_error 1 = ' . $error);
+                $this->setAuthFailure(100, $error);
                 ldap_close($ldapconn); // all done? close connection
                 return;
             }
@@ -545,12 +552,14 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
             }
 
             // binding to ldap server with the userDN and provided credentials
-            $ldapbind = @ldap_bind($ldapconn, $userdn, $password);
+            $ldapbind = ldap_bind($ldapconn, $userdn, $password);
         }
 
         // verify user binding
         if (!$ldapbind) {
-            $this->setAuthFailure(100, ldap_error($ldapconn));
+            $error = ldap_error($ldapconn);
+            error_log('ldap_error 2 = ' . $error);
+            $this->setAuthFailure(100, $error);
             ldap_close($ldapconn); // all done? close connection
             return;
         }
