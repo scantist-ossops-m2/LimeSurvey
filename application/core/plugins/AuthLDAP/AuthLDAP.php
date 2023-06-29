@@ -199,7 +199,8 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
             return;
         }
 
-        $this->_createNewUser(flattenText(Yii::app()->request->getPost('new_user'), false, true));
+        $oEvent = $this->getEvent();
+        $this->_createNewUser($oEvent, flattenText(Yii::app()->request->getPost('new_user'), false, true));
     }
 
     /**
@@ -209,10 +210,8 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
      * @param string $password
      * @return null|integer New user ID
      */
-    private function _createNewUser($new_user, $password = null)
+    private function _createNewUser($oEvent, $new_user, $password = null)
     {
-        $oEvent = $this->getEvent();
-
         // Get configuration settings:
         $ldapmode = $this->get('ldapmode');
         $searchuserattribute = $this->get('searchuserattribute');
@@ -263,8 +262,13 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
         $userentry = false;
         // try each semicolon-separated search base in order
         foreach (explode(";", $usersearchbase) as $usb) {
+            error_log('$usb = ' . $usb);
+            error_log('$usersearchfilter = ' . $usersearchfilter);
+            error_log('$mailattribute = ' . $mailattribute);
+            error_log('$fullnameattribute = ' . $fullnameattribute);
             $dnsearchres = ldap_search($ldapconn, $usb, $usersearchfilter, array($mailattribute, $fullnameattribute));
             $rescount = ldap_count_entries($ldapconn, $dnsearchres);
+            error_log('$rescount = ' . $rescount);
             if ($rescount == 1) {
                 $userentry = ldap_get_entries($ldapconn, $dnsearchres);
                 $new_email = flattenText($userentry[0][strtolower($mailattribute)][0]);
@@ -491,6 +495,7 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
             // in simple bind mode we know how to construct the userDN from the username
             $dn = $prefix . $username . $suffix;
             error_log('$dn = ' . $dn);
+            error_log('$password = ' . $password);
             $ldapbind = ldap_bind($ldapconn, $dn, $password);
         } else {
             // in search and bind mode we first do a LDAP search from the username given
@@ -568,12 +573,25 @@ class AuthLDAP extends LimeSurvey\PluginManager\AuthPluginBase
 
         // Finally, if user didn't exist and auto creation (i.e. autoCreateFlag == true) is enabled, we create it
         if ($autoCreateFlag) {
-            if (($iNewUID = $this->_createNewUser($username, $password)) && $this->get('automaticsurveycreation', null, null, false)) {
+            $dummyEvent = new class() {
+                public $warnings;
+                public function set($a, $b) {
+                    $this->warnings[$a] = $b;
+                }
+                public function __toString() {
+                    return json_encode($this->warnings);
+                }
+            };
+            if (($iNewUID = $this->_createNewUser($dummyEvent, $username, $password)) && $this->get('automaticsurveycreation', null, null, false)) {
                 Permission::model()->setGlobalPermission($iNewUID, 'surveys', array('create_p'));
             }
             $user = $this->api->getUserByName($username);
             if ($user === null) {
-                $this->setAuthFailure(self::ERROR_USERNAME_INVALID, gT('Credentials are valid but we failed to create a user'));
+                $this->setAuthFailure(
+                    self::ERROR_USERNAME_INVALID,
+                    gT('Credentials are valid but we failed to create a user') . PHP_EOL
+                    . (string) $dummyEvent
+                );
                 return;
             }
         }
