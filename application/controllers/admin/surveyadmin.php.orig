@@ -273,8 +273,7 @@ class SurveyAdmin extends Survey_Common_Action
             // Create temporary directory
             // If dangerous content is unzipped
             // then no one will know the path
-            Yii::import('application.helpers.common_helper', true);
-            $extractdir  = createRandomTempDir();
+            $extractdir  = $this->_tempdir(Yii::app()->getConfig('tempdir'));
             $zipfilename = $_FILES['the_file']['tmp_name'];
             $basedestdir = Yii::app()->getConfig('uploaddir')."/surveys";
             $destdir     = $basedestdir."/$iSurveyID/";
